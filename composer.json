@@ -1,0 +1,26 @@
+{
+    "name": "sd-404/chuck-norris-jokes",
+    "description": "Chuck Norris jokes",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Samed Touati",
+            "email": "samed.touati@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sd404\\ChuckNorrisJokes\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sd404\\ChuckNorrisJokes\\Tests\\": "tests/"
+        }
+    }
+}
