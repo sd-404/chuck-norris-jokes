@@ -3,23 +3,24 @@
 
 namespace Sd404\ChuckNorrisJokes;
 
+use GuzzleHttp\Client;
+
 class JokeFactory
 {
-    protected $jokes = [
-        'This is a joke',
-        'Chuck Norris got Coronavirus. Now the Coronavirus is in isolation.',
-        'Chuck Norris can kill your imaginary friends.'
-    ];
+    const API_ENDPOINT = 'http://api.icndb.com/jokes/random';
+    protected $client;
 
-    public function __construct(array $jokes = null)
+    public function __construct(Client $client = null)
     {
-        if ($jokes){
-            $this->jokes = $jokes;
-        }
+        $this->client = $client ?: new Client();
     }
 
     public function getRandomJoke()
     {
-        return $this->jokes[array_rand($this->jokes)];
+        $response = $this->client->get(self::API_ENDPOINT);
+
+        $joke = json_decode($response->getBody()->getContents());
+
+        return $joke->value->joke;
     }
 }

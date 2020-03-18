@@ -2,6 +2,10 @@
 
 namespace Sd404\ChuckNorrisJokes\Tests;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Sd404\ChuckNorrisJokes\JokeFactory;
 
@@ -10,28 +14,22 @@ class JokeFactoryTest extends TestCase
     /** @test */
     public function it_returns_a_random_joke()
     {
-        $jokes = new JokeFactory([
-            'This is a joke'
+        $mock = new MockHandler([
+            new Response(
+                200,
+                [],
+                '{ "type": "success", "value": { "id": 37, "joke": "If you spell Chuck Norris in Scrabble, you win. Forever.", "categories": [] } }'
+            ),
         ]);
 
-        $joke = $jokes->getRandomJoke();
+        $handlerStack = HandlerStack::create($mock);
 
-        $this->assertSame('This is a joke', $joke);
-    }
+        $client = new Client(['handler' => $handlerStack]);
 
-    /** @test */
-    public function it_returns_a_predefined_joke()
-    {
-        $chuckNorrisJokes = [
-            'This is a joke',
-            'Chuck Norris got Coronavirus. Now the Coronavirus is in isolation.',
-            'Chuck Norris can kill your imaginary friends.'
-        ];
-
-        $jokes = new JokeFactory();
+        $jokes = new JokeFactory($client);
 
         $joke = $jokes->getRandomJoke();
 
-        $this->assertContains($joke, $chuckNorrisJokes);
+        $this->assertSame('If you spell Chuck Norris in Scrabble, you win. Forever.', $joke);
     }
 }
