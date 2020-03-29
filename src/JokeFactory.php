@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sd404\ChuckNorrisJokes;
 
 use GuzzleHttp\Client;
